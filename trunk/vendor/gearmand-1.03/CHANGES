@@ -1,0 +1,31 @@
+1.03 2006-09-25
+
+        * "version" text command
+
+        * weakref client connections in listeners list so they go away.
+          still wondering why the jobs holding them lasted so long.
+          or was it a loop?  time will tell.  go gladiator.
+
+1.02  2006-09-20
+
+        * Devel::Gladiator support for tracking elusive memory leak
+
+        * support for "shutdown" and "shutdown graceful" commands,
+          the latter of which immediate stops listens, and exits
+          when convenient
+
+1.01  2006-07-01
+
+        * Artur Bergman backed out some changes seconds before I did
+          the 1.00 release.  this puts them back in.
+
+1.00  2006-07-01
+
+        * the get-it-on-CPAN-finally release.  but forgot this changes
+          entry.
+
+0.30  2006-06-27
+
+        * fix memory leak with sleepers list.  change it from list to hash
+          so there can't be dups, as there were before, when a worker
+          could do multiple functions.

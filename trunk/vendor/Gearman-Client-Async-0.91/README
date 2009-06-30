@@ -1,0 +1,35 @@
+NAME
+    Gearman::Client::Async - Asynchronous client module for Gearman for
+    Danga::Socket applications
+
+SYNOPSIS
+        use Gearman::Client::Async;
+
+        # Instantiate a new Gearman::Client::Async object.
+        $client = Gearman::Client::Async->new(
+            job_servers => [ '127.0.0.1', '192.168.0.1:123' ],
+        );
+
+        # Overwrite job server list with a new one.
+        $client->set_job_servers( '10.0.0.1' );
+
+        # Read list of job servers out of the client.
+        $arrayref = $client->job_servers;
+        @array = $client->job_servers;
+
+        # Start a task
+        $task = Gearman::Task->new(...); # with callbacks, etc
+        $client->add_task( $task );
+
+COPYRIGHT
+    Copyright 2006 Six Apart, Ltd.
+
+    License granted to use/distribute under the same terms as Perl itself.
+
+WARRANTY
+    This is free software. This comes with no warranty whatsoever.
+
+AUTHORS
+     Brad Fitzpatrick (brad@danga.com)
+     Jonathan Steinert (hachi@cpan.org)
+

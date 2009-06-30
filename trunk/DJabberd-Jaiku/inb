@@ -1,0 +1,225 @@
+1..8
+ok 1 - $VAR1 = {
+#           'rv' => [
+#                     {
+#                       'owner' => 'popular@jaiku.com',
+#                       'entry' => undef,
+#                       'stream' => 'stream/popular@jaiku.com/presence',
+#                       'uuid' => '12345',
+#                       'actor' => 'popular@jaiku.com',
+#                       'created_at' => '2008-02-15 01:02:03',
+#                       'deleted_at' => undef,
+#                       'extra' => {
+#                                    'comment_count' => 2,
+#                                    'title' => 'test entry 1'
+#                                  }
+#                     },
+#                     {
+#                       'owner' => 'popular@jaiku.com',
+#                       'entry' => undef,
+#                       'stream' => 'stream/popular@jaiku.com/presence',
+#                       'uuid' => '12346',
+#                       'actor' => 'popular@jaiku.com',
+#                       'created_at' => '2008-02-15 01:02:04',
+#                       'deleted_at' => undef,
+#                       'extra' => {
+#                                    'icon' => 'web-balloons',
+#                                    'title' => 'test entry 2'
+#                                  }
+#                     },
+#                     {
+#                       'owner' => 'popular@jaiku.com',
+#                       'entry' => undef,
+#                       'stream' => 'stream/popular@jaiku.com/presence',
+#                       'uuid' => '12347',
+#                       'actor' => 'popular@jaiku.com',
+#                       'created_at' => '2008-02-15 01:02:05',
+#                       'deleted_at' => undef,
+#                       'extra' => {
+#                                    'title' => 'test entry 3'
+#                                  }
+#                     },
+#                     {
+#                       'owner' => 'popular@jaiku.com',
+#                       'entry' => 'stream/popular@jaiku.com/presence/12345',
+#                       'stream' => 'stream/popular@jaiku.com/comments',
+#                       'uuid' => '12348',
+#                       'actor' => 'popular@jaiku.com',
+#                       'created_at' => '2008-02-15 01:02:08',
+#                       'deleted_at' => undef,
+#                       'extra' => {
+#                                    'entry_stream' => 'stream/popular@jaiku.com/presence',
+#                                    'entry_uuid' => '12345',
+#                                    'entry_stream_type' => 'presence',
+#                                    'content' => 'test entry comment 1',
+#                                    'entry_title' => 'test entry 1'
+#                                  }
+#                     },
+#                     {
+#                       'owner' => 'popular@jaiku.com',
+#                       'entry' => undef,
+#                       'stream' => 'stream/popular@jaiku.com/presence',
+#                       'uuid' => 'feee86ea32154f4fb50d8f5d87a5a625',
+#                       'actor' => 'popular@jaiku.com',
+#                       'created_at' => '2009-02-18 20:46:35.716184',
+#                       'deleted_at' => undef,
+#                       'extra' => {
+#                                    'icon' => 0,
+#                                    'location' => '',
+#                                    'title' => 'First post!'
+#                                  }
+#                     },
+#                     {
+#                       'owner' => 'popular@jaiku.com',
+#                       'entry' => undef,
+#                       'stream' => 'stream/popular@jaiku.com/presence',
+#                       'uuid' => 'c655352645f5452c8d7668ada772c087',
+#                       'actor' => 'popular@jaiku.com',
+#                       'created_at' => '2009-02-18 20:48:08.932321',
+#                       'deleted_at' => undef,
+#                       'extra' => {
+#                                    'icon' => 0,
+#                                    'location' => '',
+#                                    'title' => 'First post!'
+#                                  }
+#                     },
+#                     {
+#                       'owner' => 'popular@jaiku.com',
+#                       'entry' => undef,
+#                       'stream' => 'stream/popular@jaiku.com/presence',
+#                       'uuid' => '937a141969a1432eaa0fa6588174b233',
+#                       'actor' => 'popular@jaiku.com',
+#                       'created_at' => '2009-02-18 20:48:40.180251',
+#                       'deleted_at' => undef,
+#                       'extra' => {
+#                                    'icon' => 0,
+#                                    'location' => '',
+#                                    'title' => 'First post!'
+#                                  }
+#                     },
+#                     {
+#                       'owner' => 'popular@jaiku.com',
+#                       'entry' => undef,
+#                       'stream' => 'stream/popular@jaiku.com/presence',
+#                       'uuid' => '81ca2c31839747a3add662581f1bf574',
+#                       'actor' => 'popular@jaiku.com',
+#                       'created_at' => '2009-02-18 20:59:05.942516',
+#                       'deleted_at' => undef,
+#                       'extra' => {
+#                                    'icon' => 0,
+#                                    'location' => '',
+#                                    'title' => 'First post!'
+#                                  }
+#                     },
+#                     {
+#                       'owner' => 'popular@jaiku.com',
+#                       'entry' => undef,
+#                       'stream' => 'stream/popular@jaiku.com/presence',
+#                       'uuid' => '5fb01d71938240409b0ad61cd020ea16',
+#                       'actor' => 'popular@jaiku.com',
+#                       'created_at' => '2009-02-18 21:00:56.826033',
+#                       'deleted_at' => undef,
+#                       'extra' => {
+#                                    'icon' => 0,
+#                                    'location' => '',
+#                                    'title' => 'First post!'
+#                                  }
+#                     },
+#                     {
+#                       'owner' => 'popular@jaiku.com',
+#                       'entry' => undef,
+#                       'stream' => 'stream/popular@jaiku.com/presence',
+#                       'uuid' => '7f4884a2be724bdda1885bc02dd7f364',
+#                       'actor' => 'popular@jaiku.com',
+#                       'created_at' => '2009-02-18 21:07:41.247065',
+#                       'deleted_at' => undef,
+#                       'extra' => {
+#                                    'icon' => 0,
+#                                    'location' => '',
+#                                    'title' => 'First post!'
+#                                  }
+#                     },
+#                     {
+#                       'owner' => 'popular@jaiku.com',
+#                       'entry' => undef,
+#                       'stream' => 'stream/popular@jaiku.com/presence',
+#                       'uuid' => 'ffd8e26ddb6c4eaaa19041d4e0bf6368',
+#                       'actor' => 'popular@jaiku.com',
+#                       'created_at' => '2009-02-18 21:08:59.713404',
+#                       'deleted_at' => undef,
+#                       'extra' => {
+#                                    'icon' => 0,
+#                                    'location' => '',
+#                                    'title' => 'First post!'
+#                                  }
+#                     },
+#                     {
+#                       'owner' => 'popular@jaiku.com',
+#                       'entry' => undef,
+#                       'stream' => 'stream/popular@jaiku.com/presence',
+#                       'uuid' => 'd8d56fe6854145ac9e4f024e50da4173',
+#                       'actor' => 'popular@jaiku.com',
+#                       'created_at' => '2009-02-18 21:11:26.878139',
+#                       'deleted_at' => undef,
+#                       'extra' => {
+#                                    'icon' => 0,
+#                                    'comment_count' => 1,
+#                                    'location' => '',
+#                                    'title' => 'First post!'
+#                                  }
+#                     },
+#                     {
+#                       'owner' => 'popular@jaiku.com',
+#                       'entry' => 'stream/popular@jaiku.com/presence/d8d56fe6854145ac9e4f024e50da4173',
+#                       'stream' => 'stream/popular@jaiku.com/comments',
+#                       'uuid' => 'c76cb5ea64bc48b6baf348351723e673',
+#                       'actor' => 'popular@jaiku.com',
+#                       'created_at' => '2009-02-18 21:11:27.047266',
+#                       'deleted_at' => undef,
+#                       'extra' => {
+#                                    'entry_stream' => 'stream/popular@jaiku.com/presence',
+#                                    'entry_uuid' => 'd8d56fe6854145ac9e4f024e50da4173',
+#                                    'content' => 'first comment!',
+#                                    'entry_stream_type' => 'presence',
+#                                    'entry_actor' => 'popular@jaiku.com',
+#                                    'entry_title' => 'First post!'
+#                                  }
+#                     },
+#                     {
+#                       'owner' => 'popular@jaiku.com',
+#                       'entry' => undef,
+#                       'stream' => 'stream/popular@jaiku.com/presence',
+#                       'uuid' => 'ac97c508f5804c61bfcb2ad9027fe81f',
+#                       'actor' => 'popular@jaiku.com',
+#                       'created_at' => '2009-02-18 21:11:43.935939',
+#                       'deleted_at' => undef,
+#                       'extra' => {
+#                                    'icon' => 0,
+#                                    'comment_count' => 1,
+#                                    'location' => '',
+#                                    'title' => 'First post!'
+#                                  }
+#                     },
+#                     {
+#                       'owner' => 'popular@jaiku.com',
+#                       'entry' => 'stream/popular@jaiku.com/presence/ac97c508f5804c61bfcb2ad9027fe81f',
+#                       'stream' => 'stream/popular@jaiku.com/comments',
+#                       'uuid' => 'c85df5ff215749f484a7bd24887ab77f',
+#                       'actor' => 'popular@jaiku.com',
+#                       'created_at' => '2009-02-18 21:11:44.105465',
+#                       'deleted_at' => undef,
+#                       'extra' => {
+#                                    'entry_stream' => 'stream/popular@jaiku.com/presence',
+#                                    'entry_uuid' => 'ac97c508f5804c61bfcb2ad9027fe81f',
+#                                    'content' => 'first comment!',
+#                                    'entry_stream_type' => 'presence',
+#                                    'entry_actor' => 'popular@jaiku.com',
+#                                    'entry_title' => 'First post!'
+#                                  }
+#                     }
+#                   ],
+#           'status' => 'ok',
+#           'servertime' => '2009-02-18 21:18:31.822767'
+#         };
+# 
+ok 2

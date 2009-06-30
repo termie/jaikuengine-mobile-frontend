@@ -1,0 +1,314 @@
+#!/usr/local/bin/perl -w
+$main::VERSION = '0.16';
+#
+=head1 NAME
+
+B<check_soa> - Check nameservers for a domain in parallel
+
+=head1 SYNOPSIS
+
+B<check_soa> [B<-d>] [B<-t>] [B<-v>] domain [server]
+
+=head1 DESCRIPTION
+
+Each nameserver for the specified domain is queried for the relevant SOA record
+and the zone serial number printed.
+
+Error reports are generated for nameservers which reply with non-authoritative,
+outdated or incorrect information.
+
+SOA query packets are sent to the nameservers as rapidly as the underlying
+hardware will allow.  The program waits for a response only when it is needed
+for analysis. Execution time is determined by the slowest nameserver.
+
+This program is based on the check_soa idea described by Albitz and Liu.
+
+=head1 OPTIONS AND ARGUMENTS
+
+=over 8
+
+=item -d
+
+Turn on resolver diagnostics.
+
+=item -t
+
+Ignore UDP datagram truncation.
+
+=item -v
+
+Verbose output including address records for each server.
+
+=item domain
+
+Fully qualified name of domain to be tested.
+
+=item server
+
+Name or list of IP addresses of DNS nameserver to be tested.
+
+=back
+
+=head1 BUGS
+
+The timeout code exploits the 4 argument form of select() function.
+This is not guaranteed to work in non-Unix environments.
+
+=head1 COPYRIGHT
+
+Copyright (c) 2003-2006, Dick Franks E<lt>rwfranks@acm.orgE<gt>
+
+This program is free software;
+you may use or redistribute it under the same terms as Perl itself.
+
+=head1 SEE ALSO
+
+Paul Albitz, Cricket Liu.
+DNS and BIND, 5th Edition.
+O'Reilly & Associates, 2006.
+
+M. Andrews.
+Negative Caching of DNS Queries.
+RFC2308, IETF Network Working Group, 1998.
+
+Tom Christiansen, Jon Orwant, Larry Wall.
+Programming Perl, 3rd Edition.
+O'Reilly & Associates, 2000.
+
+R. Elz, R. Bush.
+Clarifications to the DNS Specification.
+RFC2181, IETF Network Working Group, 1997.
+
+P. Mockapetris.
+Domain Names - Concepts and Facilities.
+RFC1034, IETF Network Working Group, 1987.
+
+=cut
+
+use strict;
+use Getopt::Std;
+
+my $self = $0;						# script
+my $version = $main::VERSION;
+my %option;
+my $options = 'dtv';					# options
+getopts("$options", \%option);				# also  --help  --version
+my ($domain, @server) = @ARGV;				# arguments
+
+my $synopsis = "Synopsis:\t$self [-$options] domain [server]";
+die eval{ system("perldoc -F $self"); "" }, "\n$synopsis\n\n" unless @ARGV;
+
+
+require Net::DNS;
+
+my @conf = (	debug	=> ($option{'d'} || 0),		# -d	enable diagnostics
+		igntc	=> ($option{'t'} || 0),		# -t	ignore truncation
+		recurse	=> 0,
+		retry	=> 2	);
+
+my $verbose = $option{'v'};				# -v	verbose
+
+my $udp_timeout	= 5;					# timeout for parallel operations
+my $udp_wait	= 0.010;				# minimum polling interval
+
+
+my $resolver = Net::DNS::Resolver->new(@conf, recurse => 1 );	# create resolver object
+my @ip = $resolver->nameservers(@server);
+
+my @ns = NS($domain);					# find NS serving domain
+my @nsdname = sort map{lc $_->nsdname} @ns;		# extract server names from NS records
+
+my $zone = @ns ? $ns[0]->name : '';			# find zone name
+
+my @soa = listRR($zone, 'SOA');				# show SOA
+report("SOA query fails for  $zone.") unless @soa;
+
+foreach ( @soa ) {					# simple sanity check
+	my $mname = lc $_->mname;			# primary server
+	report('no retry when zone transfer fails') if ($_->refresh + $_->retry) > $_->expire;
+	report('minimum TTL exceeds zone expiry time') if $_->minimum > $_->expire;
+	next if grep{$_ eq $mname} @nsdname;		# NS list includes primary server
+	next if $resolver->query($mname, 'A');		# or address records exist
+	next if $resolver->query($mname, 'AAAA');	# (unlisted primary is never tested)
+	report('unresolved MNAME field:', "$mname.");		# RFC2181, 7.3
+}
+
+for ( "$zone." ) {					# show RR for domain if relevant
+	listRR($domain, 'ANY') unless /$domain/i;
+}
+
+print "----\n";
+
+if ( @server ) {
+	my @nominated = map{@server > 1 ? $_ : "@server $_"} sort @ip;
+	checkNS($zone, @nominated);
+} else {
+	my $n = @nsdname || $resolver->print;		# suspect resolver if no NS
+	my ($errors, @etc) = checkNS($zone, @nsdname);	# report status
+	print "\nUnexpected response from $errors of $n nameservers\n" if $errors;
+}
+print "\n";
+
+exit;
+
+
+sub catnap {				# short duration sleep
+	my $duration = shift;				# seconds
+	sleep(1+$duration) unless eval { defined select(undef, undef, undef, $duration) };
+}
+
+
+sub checkNS {				# check nameservers (in parallel) and report status
+	my $zone = shift;
+	my $index = @_ || return (0,0);			# server list empty
+	my ($ns, $if) = split / /, pop @_||return(0,0);	# name/interface at end of list
+
+	my $res = Net::DNS::Resolver->new(@conf);	# use clean resolver for each test
+	my @xip = sort $res->nameservers($if || $ns);	# point at nameserver
+	my $ip = pop @xip;				# last (or only) interface
+	$res->nameservers($ip) if @xip;
+							# send query packet to nameserver
+	my ($socket, $sent) = ($res->bgsend($zone,'SOA'), time) if $ip and not @server;
+
+	my @pass = checkNS($zone, @_);			# recurse to query others in parallel
+							# pick up response as recursion unwinds
+
+	my ($fail, $latest, %soa) = @pass;		# use prebuilt return values
+	my @fail = @pass;	$fail[0]++;
+
+	if ( @xip and $socket ) {			# special handling for multihomed server
+		until ($res->bgisready($socket)) {	# wait for outstanding query to complete
+			last if time > ($sent + $udp_timeout);
+			catnap($udp_wait);
+		}
+	}
+	foreach (@xip) {				# iterate over remaining interfaces
+		my ($f, @etc) = checkNS($zone, (undef)x@_, "$ns $_");	# pass name/IP pair
+		@pass = @fail if $f;			# propagate failure to caller
+	}
+
+	my %nsname;					# identify nameserver
+	unless ( $ip ) {
+		print "\n[$index]\t$ns\n";
+		report('unresolved server name');
+		return @fail;
+	} elsif ( $ns eq $ip ) {
+		print "\n[$index]\t$ip\n";
+	} else {
+		print "\n[$index]\t$ns ($ip)\n";
+		$nsname{$ns}++;
+	}
+
+	if ( $verbose ) {
+		foreach ( grep{$_->type eq 'PTR'} listRR($ip) ) {
+			$nsname{lc $_->ptrdname}++;
+		}
+		foreach my $ns ( sort keys %nsname ) {	# show address records
+			listRR($ns, 'A');
+			listRR($ns, 'AAAA');
+		}
+	}
+
+	my $packet;
+	if ( $socket ) {
+		until ($_ = $res->bgisready($socket)) {	# timed wait on socket
+			last if time > ($sent + $udp_timeout);
+			catnap($udp_wait);		# snatch a few milliseconds sleep
+		}
+		$packet = $res->bgread($socket) if $_;	# read response if available
+	} else {
+		$packet = $res->send($zone, 'SOA');	# use sequential query model
+	}
+
+	unless ( $packet ) {				# ... is no more! It has ceased to be!
+		report('no response');
+		return @fail;
+	}
+
+	unless ( $packet->header->rcode eq 'NOERROR' ) {
+		report($packet->header->rcode);		# NXDOMAIN or fault at nameserver
+		return @fail;					# RFC2308, 2.1
+	}
+
+	my $aa = $packet->header->aa;			# authoritative answer
+	my $tc = $packet->header->tc ? 'tc' : '';	# truncated  response
+	my @answer = $packet->answer;			# answer section
+	my @soa = grep{$_->type eq 'SOA'} @answer;	# SOA records (plural!)
+
+	my @result = @fail;				# analyse response
+	if ( @soa ) {
+		@result = @pass if $aa;				# RFC2181, 6.1
+		report('non-authoritative answer') unless $aa;	# RFC1034, 6.2.1 (2)
+	} elsif ( @soa = grep{$_->type eq 'SOA'} $packet->authority ) {
+		my $ttl = $soa[0]->ttl;				# RFC2308, 2.2 (1)(2)
+		report("NCACHE response (ttl $ttl seconds)");
+	} elsif ( grep{$_->type eq 'NS'} $packet->authority ) {
+		report('referral received from nameserver');	# RFC2308, 2.2 (4)
+		return @fail;					# RFC2181, 6.1
+	} else {
+		report('NODATA response from nameserver');	# RFC2308, 2.2 (3)
+		return @fail;					# RFC2181, 6.1
+	}
+
+	my $serial;					# zone serial number
+	foreach ( @soa ) {
+		print "$tc\t\t\tzone serial\t", ($serial = $_->serial), "\n";
+		$_->serial(0);				# key on constant fields only
+		$_->ttl(0);
+		next if $soa{lc $_->string}++;		# skip repeated occurrences
+		next unless keys %soa > 1;		# zone should have unique SOA
+		report('SOA record not unique');		# RFC2181, 6.1
+		@result = (@fail, %soa);
+	}
+
+	return @result if $serial == $latest;		# server has latest data
+
+	unless ( $aa and ($serial > $latest) ) {	# unexpected serial number
+		report('serial number not current') if $latest;
+		return (@fail, %soa);
+	}
+
+	my $unrep = $latest ? (@_ - $fail) : 0;		# all previous out of date
+	my $s = $unrep > 1 ? 's' : '';			# pedants really are revolting!
+	report("at least $unrep previously unreported stale serial number$s") if $unrep;
+	return ($result[0]+$unrep, $serial, %soa);	# restate partial result
+}
+
+
+sub listRR {				# print all RR for specified name
+	my $packet = $resolver->send(@_) || return ();	# get specified RRs
+	my $na = $packet->header->tc ? 'tc' : '';	# non-auth  response
+	my $aa = $packet->header->aa ? "aa $na" : $na;	# authoritative answer
+	my $qname = ($packet->question)[0]->qname;
+	my @answer = $packet->answer;
+	foreach ( @answer ) {				# print RR with status flags
+		my $string = $_->string;		# display IPv6 compact form
+		$string =~ s/(:[:0]*:)(?!.*::|.+\1)/::/o if $_->type eq 'AAAA';
+		print $_->name eq $qname ? $aa : $na, "\t$string\n";
+	}
+	return @answer;
+}
+
+
+sub NS {				# find nameservers for domain
+	my $domain = shift || '.';			# name or IP address
+	my @ns = ();
+	my $version = Net::DNS::version();
+	while (	$domain ) {
+		my $packet = $resolver->send($domain, 'NS') || return ();
+		last if @ns = grep{$_->type eq 'NS'} $packet->answer;
+		($_, $domain) = split /\./, ($packet->question)[0]->qname, 2;
+		die "\tIPv6 feature not implemented in Net::DNS $version\n" if /:/;
+		if ( my @soa = grep{$_->type eq 'SOA'} $packet->authority ) {
+			$domain = $soa[0]->name;	# zone cut
+		}
+	}
+	return @ns;
+}
+
+
+sub report {				# concatenate strings into fault report
+	print join(' ', '*'x4, @_, "\n");
+}
+
+__END__
