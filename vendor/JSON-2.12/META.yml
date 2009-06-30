@@ -1,0 +1,14 @@
+--- #YAML:1.0
+name:                JSON
+version:             2.12
+abstract:            JSON (JavaScript Object Notation) encoder/decoder
+license:             ~
+author:              
+    - Makamaka Hannyaharamitu, E<lt>makamaka[at]cpan.orgE<gt>
+generated_by:        ExtUtils::MakeMaker version 6.42
+distribution_type:   module
+requires:     
+    Test::More:                    0
+meta-spec:
+    url:     http://module-build.sourceforge.net/META-spec-v1.3.html
+    version: 1.3

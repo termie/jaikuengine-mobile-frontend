@@ -1,0 +1,28 @@
+XML::Parser::Lite::Tree
+=======================
+
+Lightweight XML tree builder
+
+
+INSTALLATION
+
+To install this module type the following:
+
+   perl Makefile.PL
+   make
+   make test
+   make install
+
+
+DEPENDENCIES
+
+This module requires these other modules and libraries:
+
+  XML::Parser::Lite
+  Test::Simple
+
+
+COPYRIGHT AND LICENCE
+
+Copyright (C) 2004 Cal Henderson <cal@iamcal.com>
+License: Perl Artistic License

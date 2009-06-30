@@ -1,0 +1,51 @@
+---
+name: Net-OAuth
+version: 0.12
+author:
+  - 'Keith Grennan <kgrennan@cpan.org>'
+abstract: An implementation of the OAuth protocol
+license: perl
+resources:
+  license: http://dev.perl.org/licenses/
+build_requires:
+  Class::Accessor: 0.31
+  Class::Data::Inheritable: 0.06
+  Digest::HMAC_SHA1: 1.01
+  Test::More: 0.66
+  UNIVERSAL::require: 0.10
+  URI::Escape: 3.28
+provides:
+  Net::OAuth:
+    file: lib/Net/OAuth.pm
+    version: 0.12
+  Net::OAuth::AccessTokenRequest:
+    file: lib/Net/OAuth/AccessTokenRequest.pm
+  Net::OAuth::AccessTokenResponse:
+    file: lib/Net/OAuth/AccessTokenResponse.pm
+  Net::OAuth::Message:
+    file: lib/Net/OAuth/Message.pm
+  Net::OAuth::ProtectedResourceRequest:
+    file: lib/Net/OAuth/ProtectedResourceRequest.pm
+  Net::OAuth::Request:
+    file: lib/Net/OAuth/Request.pm
+    version: 0.12
+  Net::OAuth::RequestTokenRequest:
+    file: lib/Net/OAuth/RequestTokenRequest.pm
+  Net::OAuth::RequestTokenResponse:
+    file: lib/Net/OAuth/RequestTokenResponse.pm
+  Net::OAuth::Response:
+    file: lib/Net/OAuth/Response.pm
+  Net::OAuth::SignatureMethod::HMAC_SHA1:
+    file: lib/Net/OAuth/SignatureMethod/HMAC_SHA1.pm
+  Net::OAuth::SignatureMethod::PLAINTEXT:
+    file: lib/Net/OAuth/SignatureMethod/PLAINTEXT.pm
+  Net::OAuth::SignatureMethod::RSA_SHA1:
+    file: lib/Net/OAuth/SignatureMethod/RSA_SHA1.pm
+  Net::OAuth::UserAuthRequest:
+    file: lib/Net/OAuth/UserAuthRequest.pm
+  Net::OAuth::UserAuthResponse:
+    file: lib/Net/OAuth/UserAuthResponse.pm
+generated_by: Module::Build version 0.2808
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.2.html
+  version: 1.2

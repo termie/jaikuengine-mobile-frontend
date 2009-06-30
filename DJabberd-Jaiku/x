@@ -1,0 +1,6 @@
+Scalar found where operator expected at lib/DJabberd/Jaiku/Avatar.pm line 158, near ""bmconv " $out_tmp"
+	(Missing operator before  $out_tmp?)
+Can't find string terminator '"' anywhere before EOF at lib/DJabberd/Jaiku/Avatar.pm line 164.
+Compilation failed in require at t/03-avatar-convert.t line 7.
+BEGIN failed--compilation aborted at t/03-avatar-convert.t line 7.
+# Looks like your test died before it could output anything.

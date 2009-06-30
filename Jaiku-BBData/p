@@ -1,0 +1,183 @@
+done
+$VAR1 = {
+          'location.value' => {
+                                'location.lac' => 10139,
+                                'location.cellid' => 39061,
+                                'location.id' => 120,
+                                'location.network' => '',
+                                'location.mcc' => 234,
+                                'location.mnc' => 10
+                              },
+          'profile' => {
+                         'profile.vibra' => 1,
+                         'profile.ringtype' => 0,
+                         'profile.id' => 0,
+                         'profile.name' => 'General',
+                         'profile.ringvolume' => 7
+                       },
+          'firstname' => 'Teemu',
+          'lastname' => 'Kurppa',
+          'city' => 'London',
+          'phonenumberhash' => 'aa419169fe9d691ff05f4a8c8aec38d3',
+          'useractivity' => {
+                              'since' => '20080731T155029',
+                              'active' => 0
+                            },
+          'base' => {
+                      'base.previous' => {
+                                           'base.id' => 1275,
+                                           'base.arrived' => '20080731T084041',
+                                           'base.left' => '20080731T085400',
+                                           'base.name' => 'Brixton'
+                                         },
+                      'base.current' => {
+                                          'base.id' => 120,
+                                          'base.arrived' => '20080731T085608',
+                                          'base.left' => '20011231T235950',
+                                          'base.name' => 'Google:Victoria'
+                                        }
+                    },
+          'country' => 'UK',
+          'usergiven' => {
+                           'since' => '20080731T082807',
+                           'description' => "Aamun tuuma: mik\x{c3}\x{a4} tekee
+    parturi/kampaamo-bisneksest\x{c3}\x{a4} niin erilaisen, ettei
+    sinne synny isoja dominoivia ketjuja?"
+                         },
+          'countrysince' => '00000101T000000',
+          'incall' => 0,
+          'devices' => [
+                         {
+                           'bt.majorclass' => 0,
+                           'bt.serviceclass' => 0,
+                           'bt.mac' => '0017e5189fda',
+                           'bt.minorclass' => 0
+                         },
+                         {
+                           'bt.majorclass' => 2,
+                           'bt.serviceclass' => 720,
+                           'bt.mac' => '001dfd717ec4',
+                           'bt.minorclass' => 3
+                         }
+                       ],
+          'calendar' => {
+                          'previous' => {
+                                          'end_time' => '00000101T000000',
+                                          'start_time' => '00000101T000000',
+                                          'eventid' => 0,
+                                          'description' => ''
+                                        },
+                          'next' => {
+                                      'end_time' => '00000101T000000',
+                                      'start_time' => '00000101T000000',
+                                      'eventid' => 0,
+                                      'description' => ''
+                                    },
+                          'current' => {
+                                         'end_time' => '00000101T000000',
+                                         'start_time' => '00000101T000000',
+                                         'eventid' => 0,
+                                         'description' => ''
+                                       }
+                        },
+          'connectivitymodel' => 1,
+          'bt.presence' => {
+                             'own_laptops' => 0,
+                             'own_pdas' => 0,
+                             'other_phones' => 17,
+                             'buddies' => 1,
+                             'own_desktops' => 0
+                           },
+          'citysince' => '00000101T000000'
+        };
+$VAR1 = {
+          'location.value' => {
+                                'location.lac' => 10139,
+                                'location.cellid' => 39061,
+                                'location.id' => 120,
+                                'location.network' => '',
+                                'location.mcc' => 234,
+                                'location.mnc' => 10
+                              },
+          'profile' => {
+                         'profile.vibra' => 1,
+                         'profile.ringtype' => 0,
+                         'profile.id' => 0,
+                         'profile.name' => 'General',
+                         'profile.ringvolume' => 7
+                       },
+          'firstname' => 'Teemu',
+          'lastname' => 'Kurppa',
+          'city' => 'London',
+          'phonenumberhash' => 'aa419169fe9d691ff05f4a8c8aec38d3',
+          'useractivity' => {
+                              'since' => '20080731T155029',
+                              'active' => 0
+                            },
+          'base' => {
+                      'base.previous' => {
+                                           'base.id' => 1275,
+                                           'base.arrived' => '20080731T084041',
+                                           'base.left' => '20080731T085400',
+                                           'base.name' => 'Brixton'
+                                         },
+                      'base.current' => {
+                                          'base.id' => 120,
+                                          'base.arrived' => '20080731T085608',
+                                          'base.left' => '20011231T235950',
+                                          'base.name' => 'Google:Victoria'
+                                        }
+                    },
+          'country' => 'UK',
+          'usergiven' => {
+                           'since' => '20080731T082807',
+                           'description' => "Aamun tuuma: mik\x{c3}\x{a4} tekee
+    parturi/kampaamo-bisneksest\x{c3}\x{a4} niin erilaisen, ettei
+    sinne synny isoja dominoivia ketjuja?"
+                         },
+          'countrysince' => '00000101T000000',
+          'incall' => 0,
+          'devices' => [
+                         {
+                           'bt.majorclass' => 0,
+                           'bt.serviceclass' => 0,
+                           'bt.mac' => '0017e5189fda',
+                           'bt.minorclass' => 0
+                         },
+                         {
+                           'bt.majorclass' => 2,
+                           'bt.serviceclass' => 720,
+                           'bt.mac' => '001dfd717ec4',
+                           'bt.minorclass' => 3
+                         }
+                       ],
+          'calendar' => {
+                          'previous' => {
+                                          'end_time' => '00000101T000000',
+                                          'start_time' => '00000101T000000',
+                                          'eventid' => 0,
+                                          'description' => ''
+                                        },
+                          'next' => {
+                                      'end_time' => '00000101T000000',
+                                      'start_time' => '00000101T000000',
+                                      'eventid' => 0,
+                                      'description' => ''
+                                    },
+                          'current' => {
+                                         'end_time' => '00000101T000000',
+                                         'start_time' => '00000101T000000',
+                                         'eventid' => 0,
+                                         'description' => ''
+                                       }
+                        },
+          'connectivitymodel' => 1,
+          'bt.presence' => {
+                             'own_laptops' => 0,
+                             'own_pdas' => 0,
+                             'other_phones' => 17,
+                             'buddies' => 1,
+                             'own_desktops' => 0
+                           },
+          'citysince' => '00000101T000000'
+        };

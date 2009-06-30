@@ -1,0 +1,26 @@
+test:
+  on connection, should
+    get anchors
+    get seen uuids
+    start getting data for all features
+
+  on receiving data, should:
+    check against seen uuids
+    mark as in-progress
+    check against poison messages
+    push to client connection
+    call enqueue on syncq
+      update anchors if necessary
+
+  on ack, should:
+    remove from in-progress
+    dequeue from syncq
+      update anchor if necessary
+    if there are enough free slots, poll for new data
+
+  after connecting:
+    if there are free slots, keep polling for data
+
+for testing:
+  add dummy data to mock storage, backend
+  support changing polling interval in mqueue

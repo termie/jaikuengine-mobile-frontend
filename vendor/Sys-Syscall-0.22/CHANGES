@@ -1,0 +1,15 @@
+0.22:
+  - don't modify non-localized $_.  whoops.  (we don't want to mess
+    with our caller's world)
+
+0.21:
+  - add missing EPOLLRDBAND, from Paul Visscher <paulv@canonical.org>
+
+0.20:
+
+  - on x86_64 detect 32-bit vs 64-bit process and use right syscall
+    numbers.  previously worked only with 64-bit userland.
+
+0.1:
+
+  - first release.  epoll and sendfile only.  Linux only.

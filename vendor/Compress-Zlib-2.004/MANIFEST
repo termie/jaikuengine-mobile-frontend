@@ -1,0 +1,25 @@
+README
+t/000prereq.t
+t/01version.t
+t/03zlib-v1.t
+t/05examples.t
+t/06gzsetp.t
+t/08encoding.t
+t/14gzopen.t
+t/99pod.t
+t/Test/Builder.pm
+t/Test/More.pm
+t/Test/Simple.pm
+t/compress/CompTestUtils.pm
+Makefile.PL
+private/MakeUtil.pm
+MANIFEST
+lib/Compress/Zlib.pm
+examples/filtdef     Perl
+examples/filtinf     Perl
+examples/gzcat       Perl
+examples/gzgrep      Perl
+examples/gzstream        Perl
+Changes
+pod/FAQ.pod
+META.yml                                 Module meta-data (added by MakeMaker)
