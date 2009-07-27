@@ -27,6 +27,7 @@
 #
 #
 # This file is part of the JaikuEngine mobile frontend.
+package Jaiku::BBData::Time;
 
 use base qw(Jaiku::BBData::Simple);
 use Jaiku::BBData::Simple;

@@ -27,6 +27,7 @@
 #
 #
 # This file is part of the JaikuEngine mobile frontend.
+package Jaiku::Presence;
 
 use DJabberd::Presence;
 use XML::Simple;

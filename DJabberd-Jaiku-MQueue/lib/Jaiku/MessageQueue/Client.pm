@@ -27,6 +27,7 @@
 #
 #
 # This file is part of the JaikuEngine mobile frontend.
+package Jaiku::MessageQueue::Client;
 
 # Copyright (c) 2002-2006 Mika Raento and Renaud Petit
 #

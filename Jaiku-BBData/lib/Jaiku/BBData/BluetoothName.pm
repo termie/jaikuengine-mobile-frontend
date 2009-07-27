@@ -27,8 +27,10 @@
 #
 #
 # This file is part of the JaikuEngine mobile frontend.
+package Jaiku::BBData::BluetoothName;
 
 use Jaiku::BBData::Factory;
+use Jaiku::BBData::Base;
 
 sub new {
   my $class = shift;

@@ -27,6 +27,7 @@
 #
 #
 # This file is part of the JaikuEngine mobile frontend.
+package Jaiku::Tuple::FeedItem;
 
 sub is_feeditem {
 	my ($uid, $id)=@_;

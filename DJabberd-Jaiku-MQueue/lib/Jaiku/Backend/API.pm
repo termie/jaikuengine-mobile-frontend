@@ -27,6 +27,7 @@
 #
 #
 # This file is part of the JaikuEngine mobile frontend.
+package Jaiku::Backend::API;
 
 #
 # A backend module for DJabberd-Jaiku-MessageQueue that retrieves pending data

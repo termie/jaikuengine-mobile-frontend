@@ -27,6 +27,7 @@
 #
 #
 # This file is part of the JaikuEngine mobile frontend.
+package Jaiku::Storage::API;
 
 #
 # A storage module for DJabberd-Jaiku-MessageQueue that stores anchors

@@ -27,7 +27,6 @@
 #
 #
 # This file is part of the JaikuEngine mobile frontend.
-
 package Jaiku::RawXML;
 
 sub new {

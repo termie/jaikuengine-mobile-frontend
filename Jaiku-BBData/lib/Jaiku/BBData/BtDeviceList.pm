@@ -27,7 +27,9 @@
 #
 #
 # This file is part of the JaikuEngine mobile frontend.
+package Jaiku::BBData::BtDeviceList;
 
+use base qw(Jaiku::BBData::List);
 use Jaiku::BBData::Factory;
 use Jaiku::BBData::BtDeviceInfo;
 

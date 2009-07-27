@@ -28,7 +28,6 @@
 #
 # This file is part of the JaikuEngine mobile frontend.
 
-
 package Jaiku::AppEngine;
 
 use strict;

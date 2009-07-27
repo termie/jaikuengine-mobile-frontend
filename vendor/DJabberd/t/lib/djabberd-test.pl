@@ -162,6 +162,7 @@ sub test_responses {
 
 package Test::DJabberd::Server;
 use strict;
+use Carp;
 use overload
     '""' => \&as_string;
 
@@ -279,6 +280,8 @@ sub start {
 
         my $childpid = fork;
         if (!$childpid) {
+            $SIG{__WARN__} = sub { Carp::cluck(@_); };
+            $SIG{__DIE__} = sub { Carp::croak(@_); };
             $server->run;
             exit 0;
         }
@@ -413,7 +416,7 @@ sub recv_xml {
     my ($self, $timeout) = @_;
     my $ev = $self->get_event($timeout, 1);
     return undef if $timeout && !$ev;
-    die "Expecting a DJabberd::XMLElement, got a $ev" unless UNIVERSAL::isa($ev, "DJabberd::XMLElement");
+    die "Expecting a DJabberd::XMLElement, got a " . ($ev || 'undef') unless UNIVERSAL::isa($ev, "DJabberd::XMLElement");
     return $ev->as_xml;
 }
 

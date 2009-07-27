@@ -27,6 +27,8 @@
 #
 #
 # This file is part of the JaikuEngine mobile frontend.
+package Jaiku::BBData::StringBase8;
+use base qw(Jaiku::BBData::Simple);
 
 use Jaiku::Uid;
 use Jaiku::BBData::Factory;

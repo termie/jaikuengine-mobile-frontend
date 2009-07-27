@@ -27,6 +27,7 @@
 #
 #
 # This file is part of the JaikuEngine mobile frontend.
+package Jaiku::BBData;
 
 use base qw(DJabberd::XMLElement);
 use Carp qw(croak);

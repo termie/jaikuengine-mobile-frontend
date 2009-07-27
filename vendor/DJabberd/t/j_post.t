@@ -7,7 +7,7 @@ use Data::Dumper;
 use Digest::SHA1;
 use Jaiku::BBData::All;
 use Jaiku::Tuple::FeedItem;
-use Test::More tests => 6;
+use Test::More tests => 5;
 use Time::HiRes;
 
 sub receive_filter_avatars {
@@ -100,7 +100,6 @@ if ($xml1 =~ /ack/) {
 
 like($ack, qr/ack/, "acked $ack");
 
-like($post, qr/0001/, "got post back $post");
 like($post, qr/0002/, "got post back $post");
 
 $pa->send_xml("<ack xmlns='http://www.cs.helsinki.fi/group/context'>2</ack>");

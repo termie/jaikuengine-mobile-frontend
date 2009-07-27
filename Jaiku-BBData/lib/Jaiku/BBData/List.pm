@@ -27,6 +27,7 @@
 #
 #
 # This file is part of the JaikuEngine mobile frontend.
+package Jaiku::BBData::List;
 
 use base qw(Jaiku::BBData);
 use Jaiku::BBData::Factory;

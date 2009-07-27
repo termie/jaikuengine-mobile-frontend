@@ -27,7 +27,9 @@
 #
 #
 # This file is part of the JaikuEngine mobile frontend.
+package Jaiku::BBData::BluetoothAddress;
 
+use base qw(Jaiku::BBData::String8);
 use Jaiku::BBData::Factory;
 
 sub new {

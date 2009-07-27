@@ -27,7 +27,6 @@
 #
 #
 # This file is part of the JaikuEngine mobile frontend.
-
 #
 # SAX parser that turns parser events into DJabberd XMLElements.
 # Code mostly taken from DJabberd::SAXHandler by bradfitz@google.com but

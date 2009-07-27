@@ -27,7 +27,6 @@
 #
 #
 # This file is part of the JaikuEngine mobile frontend.
-
 #
 # A SyncQueue keeps track of anchors based on items to be sent and
 # items acked/discarded.

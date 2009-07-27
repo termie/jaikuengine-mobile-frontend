@@ -27,6 +27,7 @@
 #
 #
 # This file is part of the JaikuEngine mobile frontend.
+package Jaiku::BBData::All;
 
 use Jaiku::BBData::Base;
 use Jaiku::BBData::BaseInfo;

@@ -27,8 +27,8 @@
 #
 #
 # This file is part of the JaikuEngine mobile frontend.
-
 package Jaiku::Stream;
+
 use strict;
 use Jaiku::BBData::FeedItem;
 use Jaiku::BBData::StreamData;

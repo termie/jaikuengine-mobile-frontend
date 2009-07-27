@@ -27,6 +27,7 @@
 #
 #
 # This file is part of the JaikuEngine mobile frontend.
+package Jaiku::Tuple::UserPic;
 
 use Jaiku::BBData::Tuple;
 

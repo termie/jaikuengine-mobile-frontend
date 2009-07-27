@@ -14,7 +14,7 @@ my $pa = Test::DJabberd::Client->new(
 $pa->login();
 ok(1);
 
-my $pa = Test::DJabberd::Client->new(
+$pa = Test::DJabberd::Client->new(
     server => $server, name => "popular",
     password => Digest::SHA1::sha1_hex("baz1"));
 
