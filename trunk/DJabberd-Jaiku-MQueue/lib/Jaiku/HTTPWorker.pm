@@ -27,6 +27,7 @@
 #
 #
 # This file is part of the JaikuEngine mobile frontend.
+package Jaiku::HTTPWorker;
 
 use fields qw(worker http flickr);
 use Gearman::Worker;

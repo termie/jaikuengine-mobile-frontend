@@ -152,6 +152,7 @@ sub request_from_method_and_parameters {
 # parsed perl hashref or undef and an error on failure.
 sub parse_response {
   my ($self, $response, $error, $request_string) = @_;
+  #print STDERR $response->as_string();
   return (undef, $error) unless($response);
   return (undef, "Request failed: " . $response->as_string() .
                  " for request " . $request_string)

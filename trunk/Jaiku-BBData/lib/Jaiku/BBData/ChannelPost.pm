@@ -27,6 +27,7 @@
 #
 #
 # This file is part of the JaikuEngine mobile frontend.
+package Jaiku::BBData::ChannelPost;
 
 use base qw(Jaiku::BBData::Compound);
 use Jaiku::BBData::Base;

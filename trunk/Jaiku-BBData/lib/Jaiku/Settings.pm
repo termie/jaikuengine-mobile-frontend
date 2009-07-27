@@ -27,6 +27,7 @@
 #
 #
 # This file is part of the JaikuEngine mobile frontend.
+package Jaiku::Settings;
 
 use constant {
 SETTING_WAP_AP	=> 1,

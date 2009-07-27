@@ -27,5 +27,6 @@
 #
 #
 # This file is part of the JaikuEngine mobile frontend.
+use Jaiku::BBData::Strings8;
 
 1;

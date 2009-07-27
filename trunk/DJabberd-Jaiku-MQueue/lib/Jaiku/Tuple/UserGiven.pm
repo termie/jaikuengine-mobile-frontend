@@ -27,6 +27,7 @@
 #
 #
 # This file is part of the JaikuEngine mobile frontend.
+package Jaiku::Tuple::UserGiven;
 
 use Jaiku::BBData::SensorEvent;
 use Jaiku::BBData::Tuple;

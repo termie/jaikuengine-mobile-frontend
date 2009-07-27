@@ -27,6 +27,7 @@
 #
 #
 # This file is part of the JaikuEngine mobile frontend.
+package Jaiku::HTTPClient;
 
 use strict;
 use fields qw(client);

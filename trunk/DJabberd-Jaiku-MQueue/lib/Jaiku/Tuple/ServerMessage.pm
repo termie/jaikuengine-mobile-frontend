@@ -27,6 +27,7 @@
 #
 #
 # This file is part of the JaikuEngine mobile frontend.
+package Jaiku::Tuple::ServerMessage;
 
 use Jaiku::BBData::Tuple;
 use strict;

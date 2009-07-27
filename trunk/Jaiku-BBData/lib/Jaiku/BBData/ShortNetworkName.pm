@@ -27,7 +27,10 @@
 #
 #
 # This file is part of the JaikuEngine mobile frontend.
+package Jaiku::BBData::ShortNetworkName;
 
+use base qw(Jaiku::BBData::String);
+use Jaiku::BBData::Base;
 use Jaiku::BBData::Factory;
 
 sub new {

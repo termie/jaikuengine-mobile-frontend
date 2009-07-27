@@ -27,6 +27,7 @@
 #
 #
 # This file is part of the JaikuEngine mobile frontend.
+package Jaiku::Tuple::ThreadRequestReply;
 
 sub is_threadrequest {
 	my ($uid, $id)=@_;
