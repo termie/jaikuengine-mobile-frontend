@@ -703,7 +703,7 @@ sub resume {
 
     $self->{is_suspended}=0;
     $self->{messagequeue}->resume_features(
-            $self->bound_jid->node, $self->{device_id}, [ "PRESENCE" ] );
+            $self->bound_jid->node, $self->{device_id}, [ "PRESENCE", "BUDDYIMG", "FEED" ] );
     $self->request_messagecount();
     $self->send_queued_presences;
     $self->send_queued_tuples;
@@ -715,7 +715,7 @@ sub suspend {
     $self->log->info("suspended " . $self->bound_jid);
     $self->{is_suspended}=1;
     $self->{messagequeue}->suspend_features(
-            $self->bound_jid->node, $self->{device_id}, [ "PRESENCE" ] );
+            $self->bound_jid->node, $self->{device_id}, [ "PRESENCE", "BUDDYIMG", "FEED" ] );
     $self->{queued_presences}={};
 }
 

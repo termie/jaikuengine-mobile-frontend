@@ -311,8 +311,15 @@ sub _set_poll_timer {
   if (!$wait) {
     $wait = $g_poll_interval;
   }
-  if ($self->{timers}->{$nickdev}) {
-    return;
+  my $fire_time = POSIX::ceil(Time::HiRes::time() + $wait);
+  my $existing = $self->{timers}->{$nickdev};
+  if ($existing) {
+    if ($fire_time < $existing->[0]) {
+      $existing->cancel;
+      delete $self->{timers}->{$nickdev};
+    } else {
+      return;
+    }
   }
   my $generation = $self->{connection_generation}->{$nickdev};
   $self->{timers}->{$nickdev} = Danga::Socket->AddTimer($wait, sub {
@@ -360,6 +367,7 @@ sub resume_features {
   foreach my $feature (@$features) {
     delete $self->{suspended_features}->{$nickdev}->{$feature};
   }
+  $self->_set_poll_timer($nick, $device_id, 0.1);
 }
 
 sub _commit_acked_uuids {
