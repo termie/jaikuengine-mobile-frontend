@@ -490,15 +490,22 @@ sub got_message {
 
 sub handle_parsed_presence {
   my ($self, $parsed, $api) = @_;
-  return if ($self->{geo_in_flight});
-  $parsed = $parsed->clone();
-  $parsed->_from_xml();
+  print STDERR "\nHANDLE_PARSED_PRESENCE\n";
+  if ($self->{geo_in_flight}) {
+    print STDERR "Not getting geo because already in flight\n";
+    return;
+  }
+  #print STDERR Dumper($parsed->as_parsed());
   my $id = $parsed->cellid()->mappedid()->value();
-  return unless ($id);
+  if (!$id) {
+    print STDERR "Not getting geo because no mapped id\n";
+    return;
+  }
   my $city = $parsed->city()->value() || "";
   my $base = $parsed->baseinfo()->current()->basename()->value() || "";
   my $cellname = $parsed->cellname()->value() || $base;
   if ($city ne "" && $cellname ne "") {
+    print STDERR "Not getting geo because names known\n";
     # no names to fetch
     return;
   }
@@ -514,15 +521,21 @@ sub handle_parsed_presence {
     $lang = "fi_FI";
   }
   my $callback_inner = sub {
+    print STDERR "GOT GEOLOCATION RESPONSE 2\n";
     my ($parsed, $error) = @_;
     if (!$parsed) {
       print STDERR "GEOLOCATION ERROR $error";
+      return;
     }
-    return if ($self->{closed});
+    if ($self->{closed}) {
+      print STDERR "CLOSED\n";
+      return;
+    }
     my $address = $parsed->{location}->{address};
+    print STDERR Dumper($address);
     if ($city eq "") {
       $city = $address->{city};
-      if ($city eq "") {
+      if ($city ne "") {
         my $tuple = Jaiku::Tuple::GivenCityName::make($id, $city);
         $self->send_stanza($tuple);
       }
@@ -531,18 +544,20 @@ sub handle_parsed_presence {
       my @parts;
       push (@parts, $address->{postal_code});
       push (@parts, $address->{street});
-      $cellname = join(", ", @parts);
-      if ($cellname eq "") {
+      $cellname = join(", ", grep { defined($_) } @parts);
+      if ($cellname ne "") {
         my $tuple = Jaiku::Tuple::GivenCellName::make($id, $cellname);
         $self->send_stanza($tuple);
       }
     }
   };
   my $callback = sub {
+    print STDERR "GOT GEOLOCATION RESPONSE\n";
     $self->{geo_in_flight} = 0;
     eval { $callback_inner->(@_) };
     print STDERR "$@" if ($@);
   };
+  print STDERR "SENDING GEOLOCATION QUERY\n";
   $api->get_geolocation(callback => $callback, lang => $lang, %$cell_to_api);
   $self->{geo_in_flight} = 1;
 }
