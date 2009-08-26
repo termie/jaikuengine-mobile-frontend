@@ -545,7 +545,7 @@ sub handle_parsed_presence {
       push (@parts, $address->{street});
       push (@parts, $address->{postal_code});
       $cellname = join(", ", grep { defined($_) } @parts);
-      $cellname = "test";
+      #$cellname = "test";
       if ($cellname ne "") {
         my $tuple = Jaiku::Tuple::GivenCellName::make($id, $cellname);
         $self->send_stanza($tuple);
