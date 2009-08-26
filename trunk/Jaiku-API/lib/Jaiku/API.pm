@@ -166,8 +166,8 @@ sub parse_response {
   return (undef, "Failed to parse json from " . $body . " $!" .
                  " for request " . $request_string)
                unless ($parsed);
-  print STDERR "REQUEST $request_string\n";
-  print STDERR "RESPONSE " . Dumper($parsed);
+  #print STDERR "REQUEST $request_string\n";
+  #print STDERR "RESPONSE " . Dumper($parsed);
 
   return $parsed;
 }

@@ -109,6 +109,15 @@ sub store_presence {
 
   my $presence = Jaiku::BBData::Presence->downbless($parsed_element);
   my $api = DJabberd::Jaiku::API->get($vhost);
+
+  # HACK
+  # We don't want to parse the presence more than once but the connection
+  # wants to handle the parsed data too. However, it may not actually
+  # have the method so let's trap errors.
+  my $conn = $vhost->find_jid($jid);
+  eval { $conn->handle_parsed_presence($presence, $api); };
+  $logger->warn($@) if ($@);
+
   my $api_handler = sub {
     my ($parsed, $error) = @_;
     if ($error) {

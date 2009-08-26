@@ -18,6 +18,8 @@ use Data::UUID;
 use Digest::MD5;
 use Jaiku::Tuple::ThreadRequest;
 use Jaiku::Tuple::ThreadRequestReply;
+use Jaiku::Tuple::GivenCityName;
+use Jaiku::Tuple::GivenCellName;
 
 use fields (
             # {=server-needs-client-wanted-roster-state}
@@ -38,7 +40,8 @@ use fields (
             'pline_tupleid',
             'id_by_tupleid', 'int_id',
             'waiting_on_initial_pline', 'pline_timer', 'sent_mc2',
-            'auth_params'
+            'auth_params',
+            'geo_in_flight',
             );
 
 #my %connections_by_deviceid=();
@@ -401,9 +404,9 @@ sub got_message {
     } elsif (Jaiku::Tuple::UserGiven::is_usergiven($tuple->tuplemeta->moduleuid->value,
                 $tuple->tuplemeta->moduleid->value)) {
               if ($self->{last_presence} && $self->{last_presence}->stanza()) {
-                print STDERR "LAST PRESENCE 1" .  $self->{last_presence}->stanza()->as_xml() . "\n";
+                #print STDERR "LAST PRESENCE 1" .  $self->{last_presence}->stanza()->as_xml() . "\n";
               }
-              print STDERR "GOT_USERGIVEN " . $tuple->as_xml . "\n";
+              #print STDERR "GOT_USERGIVEN " . $tuple->as_xml . "\n";
         $self->replace_tupleid($tuple);
         my $not_avail_yet=0;
         my $prev_id=$self->{pline_tupleid};
@@ -421,7 +424,7 @@ sub got_message {
         $self->{last_presence}->set_status_from_usergiven(
                 $tuple->data->as_xml );
         if ($self->{last_presence}->stanza()) {
-          print STDERR "LAST PRESENCE 2" .  $self->{last_presence}->stanza()->as_xml() . "\n";
+          #print STDERR "LAST PRESENCE 2" .  $self->{last_presence}->stanza()->as_xml() . "\n";
         }
         $self->send_from_presenceline( $not_avail_yet );
     } elsif (Jaiku::Tuple::FeedItem::is_feeditem($tuple->tuplemeta->moduleuid->value,
@@ -483,6 +486,65 @@ sub got_message {
             $self->replace_tupleid($tuple);
         $self->send_or_queue_tuple($tuple);
     }
+}
+
+sub handle_parsed_presence {
+  my ($self, $parsed, $api) = @_;
+  return if ($self->{geo_in_flight});
+  $parsed = $parsed->clone();
+  $parsed->_from_xml();
+  my $id = $parsed->cellid()->mappedid()->value();
+  return unless ($id);
+  my $city = $parsed->city()->value() || "";
+  my $base = $parsed->baseinfo()->current()->basename()->value() || "";
+  my $cellname = $parsed->cellname()->value() || $base;
+  if ($city ne "" && $cellname ne "") {
+    # no names to fetch
+    return;
+  }
+  my $parsed_cellid = $parsed->cellid();
+  my $cell_to_api = {
+      cell_id => $parsed_cellid->cellid()->value(),
+      location_area_code => $parsed_cellid->locationareacode()->value(),
+      mobile_network_code => $parsed_cellid->mnc()->value(),
+      mobile_country_code => $parsed_cellid->mcc()->value(),
+  };
+  my $lang;
+  if ($parsed_cellid->mcc() == 244) {
+    $lang = "fi_FI";
+  }
+  my $callback_inner = sub {
+    my ($parsed, $error) = @_;
+    if (!$parsed) {
+      print STDERR "GEOLOCATION ERROR $error";
+    }
+    return if ($self->{closed});
+    my $address = $parsed->{location}->{address};
+    if ($city eq "") {
+      $city = $address->{city};
+      if ($city eq "") {
+        my $tuple = Jaiku::Tuple::GivenCityName::make($id, $city);
+        $self->send_stanza($tuple);
+      }
+    }
+    if ($cellname eq "") {
+      my @parts;
+      push (@parts, $address->{postal_code});
+      push (@parts, $address->{street});
+      $cellname = join(", ", @parts);
+      if ($cellname eq "") {
+        my $tuple = Jaiku::Tuple::GivenCellName::make($id, $cellname);
+        $self->send_stanza($tuple);
+      }
+    }
+  };
+  my $callback = sub {
+    $self->{geo_in_flight} = 0;
+    eval { $callback_inner->(@_) };
+    print STDERR "$@" if ($@);
+  };
+  $api->get_geolocation(callback => $callback, lang => $lang, %$cell_to_api);
+  $self->{geo_in_flight} = 1;
 }
 
 sub replace_tupleid {

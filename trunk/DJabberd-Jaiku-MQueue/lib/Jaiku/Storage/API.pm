@@ -84,7 +84,7 @@ sub get_anchors {
   my $prefix_len = length($prefix);
   my $handler = sub {
     my ($parsed, $error) = @_;
-    if ($error =~ /returned None/) {
+    if (defined($error) && $error =~ /returned None/) {
       # Initial non-existent values cause an error in JaikuEngine, workaround
       # until fixed.
       $parsed = { status => 'ok', keyvalues => [] };
