@@ -517,7 +517,7 @@ sub handle_parsed_presence {
       mobile_country_code => $parsed_cellid->mcc()->value(),
   };
   my $lang;
-  if ($parsed_cellid->mcc() == 244) {
+  if ($parsed_cellid->mcc()->value() == 244) {
     $lang = "fi_FI";
   }
   my $callback_inner = sub {
@@ -542,9 +542,10 @@ sub handle_parsed_presence {
     }
     if ($cellname eq "") {
       my @parts;
-      push (@parts, $address->{postal_code});
       push (@parts, $address->{street});
+      push (@parts, $address->{postal_code});
       $cellname = join(", ", grep { defined($_) } @parts);
+      $cellname = "test";
       if ($cellname ne "") {
         my $tuple = Jaiku::Tuple::GivenCellName::make($id, $cellname);
         $self->send_stanza($tuple);

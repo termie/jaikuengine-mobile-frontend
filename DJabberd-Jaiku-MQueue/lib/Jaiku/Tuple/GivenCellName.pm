@@ -35,7 +35,7 @@ use Jaiku::BBData::Tuple;
 sub is_givencellname {
 	my ($uid, $id)=@_;
 	return 0 unless ($uid == 0x20006E4D || $uid == 0x200084C1);
-	return ($id==42);
+	return ($id==48);
 }
 
 sub UID {
@@ -43,7 +43,7 @@ sub UID {
 }
 
 sub ID {
-	return 42;
+	return 48;
 }
 
 sub make {
@@ -59,7 +59,7 @@ sub make {
 
 	my $t=new Jaiku::BBData::Tuple;
 	$t->tuplemeta->moduleuid->set_value("0x20006E4D");
-	$t->tuplemeta->moduleid->set_value(42);
+	$t->tuplemeta->moduleid->set_value(48);
 	$t->set_data($e);
 	$t->set_type_attributes;
 
