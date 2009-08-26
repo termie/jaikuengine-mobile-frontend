@@ -357,4 +357,48 @@ sub get_avatar() {
   );
 }
 
+sub get_geolocation() {
+  my ($self, %params) = @_;
+  my $lang = delete $params{lang} || "en_GB";
+  my $cellid = {};
+  foreach my $cellid_part (qw(cell_id location_area_code mobile_country_code
+                              mobile_network_code)) {
+    die "must specify $cellid_part" unless (defined($params{$cellid_part}));
+    $cellid->{$cellid_part} = delete $params{$cellid_part};
+  }
+  die "Must specify callback function" unless($params{callback});
+  my $callback = delete $params{callback};
+
+  my $request_body = {
+    version => '1.0',
+    host => 'mobile-fe.jaiku.com',
+    radio_type => "gsm",
+    request_address => JSON::true,
+    address_language => $lang,
+    cell_towers => [ $cellid ],
+  };
+  
+  my $jsonified = $json->encode($request_body);
+  my $url = "http://www.google.com/loc/json";
+  
+  my $request = HTTP::Request->new(POST => $url);
+  $request->content($jsonified);
+
+  $self->{async_http}->(
+    $request,
+    sub {
+      my ($response, $error) = @_;
+      my $data;
+      if ($response && !$response->is_success()) {
+        $error .= "Request failed: " . $response->as_string();
+      } else {
+        my $body = $response->content();
+        eval { $data = $json->decode($body); };
+        $error = "Failed to parse json from $body $!";
+      }
+      $callback->($data, $error);
+    }
+  );
+}
+
 1;
