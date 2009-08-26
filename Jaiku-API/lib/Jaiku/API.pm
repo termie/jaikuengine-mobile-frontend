@@ -394,7 +394,7 @@ sub get_geolocation() {
       } else {
         my $body = $response->content();
         eval { $data = $json->decode($body); };
-        $error = "Failed to parse json from $body $!";
+        $error = "Failed to parse json from $body $@";
       }
       $callback->($data, $error);
     }
