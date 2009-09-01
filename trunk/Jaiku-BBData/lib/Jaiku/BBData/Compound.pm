@@ -31,6 +31,7 @@ package Jaiku::BBData::Compound;
 
 use base qw(Jaiku::BBData);
 use Jaiku::BBData::Factory;
+use Carp;
 
 sub _from_xml {
   my $self=shift;
@@ -91,7 +92,7 @@ sub from_parsed {
       if (Jaiku::BBData::release_mode()) {
         print STDERR "failed to parse some BBData: $@";
       } else {
-        die $@;
+        Carp::croak($@);
       }
     }
   }

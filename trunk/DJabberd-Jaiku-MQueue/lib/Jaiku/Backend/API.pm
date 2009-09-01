@@ -136,6 +136,20 @@ sub _async {
   };
 }
 
+sub _fix_uuid {
+  my ($uuid, $uuid_type) = @_;
+  if (length($uuid) < 32) {
+    # Test server has weird uuids.
+    my $fill = 32 - length($uuid) - 1;
+    $uuid = $uuid_type . "0" x $fill . $uuid;
+  }
+  if (length($uuid) > 32) {
+    $uuid = substr($uuid, 0, 32);
+  }
+  return $uuid;
+}
+
+
 sub get_contacts {
   my ($self, $nick, $anchor, $cb) = @_;
   $anchor ||= '';
@@ -231,17 +245,18 @@ sub get_presence {
         my $value = DJabberd::Jaiku::Transforms::api_to_presence(
             $extra);
         $data = Jaiku::BBData::Presence->new("tuplevalue");
-        $data->from_parsed($value);
+        eval {
+          $data->from_parsed($value);
+        };
+        if ($@) {
+          die "$@ while parsing " . Dumper($value);
+	}
         $tuple->tuplemeta()->moduleuid()->set_value(Jaiku::Presence::UID);
         $tuple->tuplemeta()->moduleid()->set_value(Jaiku::Presence::ID);
         $tuple->tuplemeta()->subname()->set_value($item->{presence}->{actor});
       }
       my $uuid = $item->{presence}->{uuid};
-      if (length($uuid) < 32) {
-        # Test server has weird uuids.
-        my $fill = 32 - length($uuid) - 1;
-        $uuid = $uuid_type . "0" x $fill . $uuid;
-      }
+      $uuid = _fix_uuid($uuid);
       my $timestamp = $item->{presence}->{updated_at};
       my $expires = format_datetime(formatted_to_datetime($timestamp) +
                                     2 * 365 * 24 * 60 * 60);
@@ -262,16 +277,6 @@ sub get_presence {
                               since_time => $anchor);
 }
 
-sub _fix_uuid {
-  my ($uuid, $uuid_type) = @_;
-  if (length($uuid) < 32) {
-    # Test server has weird uuids.
-    my $fill = 32 - length($uuid) - 1;
-    $uuid = $uuid_type . "0" x $fill . $uuid;
-  }
-  return $uuid;
-}
-
 sub _tuple_from_feeditem {
   my ($item) = @_;
   my $uuid = $item->{uuid};
@@ -289,7 +294,13 @@ sub _tuple_from_feeditem {
   my $feeditem = Jaiku::BBData::FeedItem->new("tuplevalue");
   my $expires = format_datetime(formatted_to_datetime($timestamp) +
                                 2 * 24 * 60 * 60);
-  $feeditem->from_parsed($value);
+  #print STDERR Dumper($value);
+  eval {
+    $feeditem->from_parsed($value);
+  };
+  if ($@) {
+    die "$@ while parsing " . Dumper($value);
+  }
   my $tuple = Jaiku::BBData::Tuple->new("tuple");
   $tuple->set_data($feeditem);
   $tuple->tuplemeta()->moduleuid()->set_value(Jaiku::Tuple::FeedItem::UID);

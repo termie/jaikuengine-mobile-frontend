@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 use strict;
 use warnings;
+use Carp;
 
 BEGIN {
     # tell debugger of sub enter/exit,
@@ -28,6 +29,8 @@ BEGIN {
     }
 }
 use DJabberd;
+
+$SIG{__DIE__} = sub { Carp::confess(@_); };
 
 $DEBUG = 0;
 
