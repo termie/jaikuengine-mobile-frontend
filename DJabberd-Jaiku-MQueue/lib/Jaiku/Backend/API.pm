@@ -256,7 +256,7 @@ sub get_presence {
         $tuple->tuplemeta()->subname()->set_value($item->{presence}->{actor});
       }
       my $uuid = $item->{presence}->{uuid};
-      $uuid = _fix_uuid($uuid);
+      $uuid = _fix_uuid($uuid, "3");
       my $timestamp = $item->{presence}->{updated_at};
       my $expires = format_datetime(formatted_to_datetime($timestamp) +
                                     2 * 365 * 24 * 60 * 60);
